@@ -9,7 +9,7 @@
 """
 from PySide6.QtWidgets import (
     QGroupBox, QVBoxLayout, QHBoxLayout, QPushButton, QListWidget, QAbstractItemView, QLineEdit, QLabel,
-    QMessageBox, QRadioButton, QDialogButtonBox, QCheckBox, QComboBox
+    QMessageBox, QRadioButton, QDialogButtonBox, QCheckBox, QComboBox, QGridLayout
     )
 
 from PySide6.QtCore import Qt
@@ -175,24 +175,24 @@ class SaveMHMForm(QVBoxLayout):
         ilayout.addWidget(self.imglabel, alignment=Qt.AlignRight)
         self.addLayout(ilayout)
 
-        # name
+        # name and author
         #
-        self.addWidget(QLabel("Name of character:"))
+        ilayout = QGridLayout()
+        ilayout.addWidget(QLabel("Name:"), 0, 0)
         self.editname = QLineEdit(self.bc.name)
         self.editname.editingFinished.connect(self.newname)
-        self.addWidget(self.editname)
+        ilayout.addWidget(self.editname, 0, 1)
 
-        # author
-        #
-        self.addWidget(QLabel("Author:"))
+        ilayout.addWidget(QLabel("Author:"), 1, 0)
         self.authname = QLineEdit(self.bc.author)
         self.authname.editingFinished.connect(self.newauthor)
-        self.addWidget(self.authname)
+        ilayout.addWidget(self.authname, 1, 1)
+        self.addLayout(ilayout)
 
         # uuid
         #
         ilayout = QHBoxLayout()
-        ilayout.addWidget(QLabel("\nUUID:"))
+        ilayout.addWidget(QLabel("UUID:"))
         self.regenbutton=QPushButton("Generate UUID")
         self.regenbutton.clicked.connect(self.genuuid)
         ilayout.addWidget(self.regenbutton, alignment=Qt.AlignBottom)
@@ -210,10 +210,13 @@ class SaveMHMForm(QVBoxLayout):
 
         # filename
         #
-        self.addWidget(QLabel("\nFilename:"))
+        ilayout = QHBoxLayout()
+        ilayout.addWidget(QLabel("Filename:"))
         self.filename = QLineEdit(self.bc.name + ".mhm")
         self.filename.editingFinished.connect(self.newfilename)
-        self.addWidget(self.filename)
+        ilayout.addWidget(self.filename)
+        self.addLayout(ilayout)
+
         self.savebutton=QPushButton("Save")
         self.savebutton.clicked.connect(self.savefile)
         self.addWidget(self.savebutton)

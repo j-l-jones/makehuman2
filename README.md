@@ -13,7 +13,7 @@ MakeHuman 2 should be successor of the standalone version MakeHuman 1, which has
 
 If you already want to test or work with this version, you should install it in parallel to old version.
 
-Only Windows and Linux will be supported. The current stardard will be OpenGL still.
+Only Windows and Linux will be supported with at least OpenGL 3.3. We try to support MacOS with OpenGL 1.2 as well. The current stardard will stay OpenGL still.
 
 ## Get the code
 
@@ -196,7 +196,9 @@ To find this file simply display the version, it is presented in the last line:
 
 	python3 makehuman -V
 
-Do not wonder about the path for Windows, this is a special python sandbox to hold your %APPDATA%. Linux is more or less standard inside the .config folder.
+Do not wonder about the path for Windows, this is a special python sandbox to hold your %APPDATA%. Linux is more or less standard inside the ~/.config folder.
+
+MacOS uses standard folder ~/Library/Application Support/MakeHuman.
 
 ##  Blender plugin
 
