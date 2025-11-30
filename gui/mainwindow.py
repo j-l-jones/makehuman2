@@ -1147,7 +1147,7 @@ class MHMainWindow(QMainWindow):
         TextBox(self, "Used library versions", image, text)
 
     def glinfo_call(self):
-        deb = GLDebug()
+        deb = GLDebug(self.env.osindex)
         text = deb.getTextInfo()
         image = self.env.stdLogo()
         TextBox(self, "Local OpenGL Information", image, text)
@@ -1173,8 +1173,11 @@ class MHMainWindow(QMainWindow):
         if self.glob.closing is False:
             self.glob.closing = True                # avoid double call by closeAllWindows
             s = self.env.session["mainwinsize"]
-            s["w"] = self.width()
-            s["h"] = self.height()
+
+            geom = self.screen().availableGeometry() # avoid bigger values than screen size when saving
+            s["w"] = min(self.width(), geom.width())
+            s["h"] = min(self.height(), geom.height())
+
             self.env.saveSession()
             if self.glob.apiSocket is not None:
                 self.glob.apiSocket.stopListening()

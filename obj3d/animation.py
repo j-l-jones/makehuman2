@@ -294,8 +294,7 @@ class BVH():
             m = np.round(joint.matrixPoses[num], decimals=3)
             if not np.array_equiv(m,restmatrix):
                 s = list(m[:3,:3].flatten())
-                zeros = np.where(~m.any(axis=0))[0]
-                if zeros.size == 3:
+                if np.count_nonzero(m[:,3]) == 0:
                     print("\"" + joint.name + "\": " + str(s))
                 else:
                     d = list(m[:3,3].flatten())

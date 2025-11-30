@@ -13,7 +13,9 @@ MakeHuman 2 should be successor of the standalone version MakeHuman 1, which has
 
 If you already want to test or work with this version, you should install it in parallel to old version.
 
-Only Windows and Linux will be supported with at least OpenGL 3.3. We try to support MacOS with OpenGL 1.2 as well. The current stardard will stay OpenGL still.
+- Windows and Linux get modern GLSL 3.3+ shaders
+- macOS users get the GLSL 1.2 shader pipeline (visual output may be slightly different)
+- All core functionality is preserved for macOS
 
 ## Get the code
 
@@ -196,9 +198,9 @@ To find this file simply display the version, it is presented in the last line:
 
 	python3 makehuman -V
 
-Do not wonder about the path for Windows, this is a special python sandbox to hold your %APPDATA%. Linux is more or less standard inside the ~/.config folder.
-
-MacOS uses standard folder ~/Library/Application Support/MakeHuman.
+- Do not wonder about the path for Windows, this is a special python sandbox to hold your %APPDATA%.
+- Linux is more or less standard inside the ~/.config folder.
+- MacOS uses standard folder ~/Library/Application Support/MakeHuman.
 
 ##  Blender plugin
 
@@ -212,7 +214,7 @@ on Linux or do that with a tool on Windows (when unzipped, the io_makehuman path
 
 In Blender simply download the zip as a file. With key "n" it should appear on the side bar. The plugin can either load exported .mh2b files or use a socket for communication. The format is the same. The mh2b format is a combination of JSON and binary structure.
 
-Best to Use this format for Blender because e.g. glTF will always convert everything to triangles.
+Best to use this format for Blender because e.g. glTF will always convert everything to triangles.
 
 ## Further information
 

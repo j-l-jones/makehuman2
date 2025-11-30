@@ -20,9 +20,17 @@ def openGLError():
         print (a)
 
 class GLDebug:
-    def __init__(self, initialized=True):
+    """
+    class for output of openGL parameters
+    :param in osindex: index to specify OS (0=Windows, 1=Linux, 2=MacOS)
+    :param bool initialized": indicates if openGL is already ininitialized
+    """
+    def __init__(self, osindex, initialized=True):
         self.initialized = initialized
-        self.min_version = tuple([3, 3])
+        self.oldvers = (osindex == 2)
+        #
+        # minimal version for apple is 2.1
+        self.min_version = tuple([2, 1]) if self.oldvers else tuple([3, 3])
 
     def getOpenGL_LibVers(self):
         return OpenGL.__version__
@@ -31,8 +39,22 @@ class GLDebug:
         return str(self.min_version)
 
     def getVersion(self):
+        """
+        get the openGL version, old version works with string
+        """
         if self.initialized:
-            return(gl.glGetIntegerv(gl.GL_MAJOR_VERSION, '*'), gl.glGetIntegerv(gl.GL_MINOR_VERSION, '*'))
+            if self.oldvers:
+                version_string = gl.glGetString(gl.GL_VERSION).decode("utf-8")
+                # Version string format: "X.Y..." (e.g., "2.1 Metal - 90.5")
+                parts = version_string.split()[0].split('.')
+                try:
+                    major = int(parts[0])
+                    minor = int(parts[1]) if len(parts) > 1 else 0
+                    return(major, minor)
+                except (ValueError, IndexError):
+                    return(0, 0)
+            else:
+                return(gl.glGetIntegerv(gl.GL_MAJOR_VERSION, '*'), gl.glGetIntegerv(gl.GL_MINOR_VERSION, '*'))
         else:
             return(0,0)
 
@@ -41,19 +63,35 @@ class GLDebug:
         return( (major, minor) >=  self.min_version)
 
     def getExtensions(self):
+        """
+        get extensions by trying to get them either with glGetStringi (valid from openGL 3.0) or with glgetString
+        """
         extensions = []
         if self.initialized:
-            n=  gl.glGetIntegerv(gl.GL_NUM_EXTENSIONS, "*")
-            for i in range(0, n):
-                extensions.append (gl.glGetStringi(gl.GL_EXTENSIONS, i).decode("utf-8"))
+            if self.oldvers:
+                ext_string = gl.glGetString(gl.GL_EXTENSIONS).decode("utf-8")
+                if ext_string:
+                    extensions = ext_string.split()
+            else:
+                n=  gl.glGetIntegerv(gl.GL_NUM_EXTENSIONS, "*")
+                for i in range(0, n):
+                    extensions.append (gl.glGetStringi(gl.GL_EXTENSIONS, i).decode("utf-8"))
         return (extensions)
 
     def getShadingLanguages(self):
+        """
+        get shading languages by trying to get them either with glGetStringi (valid from openGL 3.0) or with glgetString
+        """
         languages = []
         if self.initialized:
-            n = int.from_bytes(gl.glGetIntegerv(gl.GL_NUM_SHADING_LANGUAGE_VERSIONS, "*"), "big")
-            for i in range(0, n):
-                languages.append(gl.glGetStringi(gl.GL_SHADING_LANGUAGE_VERSION, i).decode("utf-8"))
+            if self.oldvers:
+                version_string = gl.glGetString(gl.GL_SHADING_LANGUAGE_VERSION).decode("utf-8")
+                if version_string:
+                    languages.append(version_string)
+            else:
+                n = int.from_bytes(gl.glGetIntegerv(gl.GL_NUM_SHADING_LANGUAGE_VERSIONS, "*"), "big")
+                for i in range(0, n):
+                    languages.append(gl.glGetStringi(gl.GL_SHADING_LANGUAGE_VERSION, i).decode("utf-8"))
         return (languages)
 
     def getCard(self):

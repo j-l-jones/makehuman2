@@ -240,7 +240,7 @@ class programInfo():
             exit (20)
 
         self.QT_Info = QTVersion(self)
-        gdebug = GLDebug(False) # not yet initialized
+        gdebug = GLDebug(self.osindex, False) # not yet initialized
         self.GL_Info = gdebug.getOpenGL_LibVers()
 
     def __str__(self):

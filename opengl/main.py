@@ -222,15 +222,14 @@ class OpenGLView(QOpenGLWidget):
         self.glob.openGLBlock = False
         self.glfunc = self.context().functions()
 
-        if self.env.osindex != 2:
-            deb = GLDebug()
-            if deb.checkVersion() is False:
-                self.env.logLine(1, "Shader version is not sufficient, minimum version is " + str(deb.minVersion() + ". Available languages are:") )
-                lang = deb.getShadingLanguages()
-                for l in lang:
-                    if l != "":
-                        self.env.logLine(1, l)
-                exit(20)
+        deb = GLDebug(self.env.osindex)
+        if deb.checkVersion() is False:
+            self.env.logLine(1, "Shader version is not sufficient, minimum version is " + str(deb.minVersion() + ". Available languages are:") )
+            lang = deb.getShadingLanguages()
+            for l in lang:
+                if l != "":
+                    self.env.logLine(1, l)
+            exit(20)
 
         baseClass = self.glob.baseClass
         o_size = baseClass.baseMesh.getHeightInUnits() if baseClass is not None else 20
