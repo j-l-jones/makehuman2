@@ -92,8 +92,10 @@ class MHTagEdit(QVBoxLayout):
         self.edittags = tags
         self.sourcetags = copyfrom
         self.numtags = numtags
+        self.setSpacing(0)
 
         ilayout = QHBoxLayout()
+        ilayout.setSpacing(2)
         ilayout.addWidget(QLabel(label))
         sweep = os.path.join(glob.env.path_sysicon, "sweep.png")
         clearbutton = IconButton(0, sweep, "Clear own tags", self.clearTags)
@@ -108,6 +110,7 @@ class MHTagEdit(QVBoxLayout):
 
         if predefined is not None:
             ilayout = QHBoxLayout()
+            ilayout.setSpacing(2)
             self.combobox = QComboBox()
             self.combobox.addItems(predefined)
             ilayout.addWidget(self.combobox)

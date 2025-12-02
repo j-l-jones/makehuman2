@@ -324,7 +324,7 @@ class MHMainWindow(QMainWindow):
             return (None)
 
         row=QHBoxLayout()
-        row.setSpacing(2)
+        row.setSpacing(0)
         for n, b in enumerate(subtool):
             if "h" not in b or b["h"] is False:
                 row.addWidget(b["button"])
